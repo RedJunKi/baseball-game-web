@@ -7,9 +7,11 @@ import java.util.List;
 import java.util.Random;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.beans.factory.annotation.Value;
 
 class NumberGeneratorTest {
 
@@ -26,14 +28,14 @@ class NumberGeneratorTest {
         assertThat(randomNums.size()).isEqualTo(numSize);
     }
 
-    @Test
-    @DisplayName("0을 제외한 변수 생성 확인")
-    void generateNum() {
-        //given
-        NumberGenerator numberGenerator = new NumberGenerator();
-        //when
-        int num = numberGenerator.generateNum();
-        //then
-        assertThat(num).isNotEqualTo(0);
-    }
+    // private 메서드로 변환됨
+//    @RepeatedTest(100)
+//    @DisplayName("0을 제외한 변수 생성 확인")
+//    void generateNum() {
+//        //given
+//        //when
+//        int num = NumberGenerator.generateNum();
+//        //then
+//        assertThat(num).isGreaterThan(0).isLessThan(10);
+//    }
 }
