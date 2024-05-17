@@ -15,14 +15,13 @@ import org.springframework.beans.factory.annotation.Value;
 
 class NumberGeneratorTest {
 
-    @ParameterizedTest
-    @ValueSource(ints = {1, 2, 3})
+    @RepeatedTest(5)
     @DisplayName("숫자 생성시 원하는 크기만큼 생성되는지 확인")
-    void checkNumberRange(int numSize) {
+    void checkNumberRange() {
         //given
-
+        int numSize = NumberConstants.NUMBER_GENERATE_SIZE.getValue();
         //when
-        List<Integer> randomNums = NumberGenerator.generate(numSize);
+        List<Integer> randomNums = NumberGenerator.generate();
         //then
 
         assertThat(randomNums.size()).isEqualTo(numSize);
