@@ -1,13 +1,12 @@
 package jk.baseballgameweb;
 
+import java.util.Collections;
 import java.util.List;
 
-public class Computer {
-    private final List<Integer> answer;
+public record Computer(List<Integer> answer) {
 
-    public Computer(List<Integer> answer) {
-        this.answer = answer;
+    @Override
+    public List<Integer> answer() {
+        return Collections.unmodifiableList(answer);
     }
-
-
 }
