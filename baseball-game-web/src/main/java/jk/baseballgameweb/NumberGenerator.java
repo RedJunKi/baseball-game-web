@@ -5,11 +5,12 @@ import java.util.List;
 
 public class NumberGenerator {
 
-    public static List<Integer> generate() {
+    public static List<Integer> generate(int size) {
         List<Integer> result = new ArrayList<>();
-        result.add(1);
-        result.add(2);
-        result.add(3);
+
+        for (int i = 0; i < size; i++) {
+            result.add(i);
+        }
         return result;
     }
 }
