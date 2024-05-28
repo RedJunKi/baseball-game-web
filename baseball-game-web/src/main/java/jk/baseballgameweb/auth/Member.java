@@ -2,11 +2,13 @@ package jk.baseballgameweb.auth;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 import lombok.Getter;
 
-@Getter
+@Data
 public class Member {
 
+    private Long id;
 
     @Size(min = MemberNumberConstants.NAME_MIN, max = MemberNumberConstants.NAME_MAX, message = "아이디는 {min}글자 이상, {max}글자 이하로 작성해주세요.")
     private String name;
