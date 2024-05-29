@@ -17,9 +17,6 @@ public class MemberController {
 
     @PostMapping("/create-member")
     public ResponseEntity<String> createMember(@Valid @RequestBody Member member) {
-        System.out.println("member.getName() = " + member.getName());
-        System.out.println("member.getPassword() = " + member.getPassword());
-        System.out.println("요청됨");
         try {
             memberService.join(member);
             return ResponseEntity.ok("회원가입이 완료되었습니다.");
