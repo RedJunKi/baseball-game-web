@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Slf4j
-@Component
+//@Component
 public class TimeTraceAop {
 
     @Around("execution(* jk.baseballgameweb..*(..))")

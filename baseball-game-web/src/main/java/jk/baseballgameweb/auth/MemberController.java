@@ -1,29 +1,34 @@
 package jk.baseballgameweb.auth;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
-@RequestMapping("/login")
+@RequestMapping("/members")
 public class MemberController {
 
     private final MemberService memberService;
 
-    @PostMapping("/create-member")
-    public ResponseEntity<String> createMember(@Valid @RequestBody Member member) {
-        try {
-            memberService.join(member);
-            return ResponseEntity.ok("회원가입이 완료되었습니다.");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    @GetMapping("/add")
+    public String addForm(@ModelAttribute("member") Member member) {
+        return "members/addMemberForm.html";
     }
+
+    @PostMapping("/add")
+    public String createMember(@Validated @ModelAttribute Member member, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "members/addMemberForm.html";
+        }
+
+        memberService.join(member);
+        return "redirect:/";
+    }
+
 //
 //    @PostMapping
 //    public ResponseEntity<String> login(@RequestBody Map<String, String> requestBody) {
