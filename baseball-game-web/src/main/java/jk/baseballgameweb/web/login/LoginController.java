@@ -1,8 +1,6 @@
 package jk.baseballgameweb.web.login;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jk.baseballgameweb.auth.Member;
 import jk.baseballgameweb.auth.MemberService;
@@ -28,14 +26,14 @@ public class LoginController {
         return "login/loginForm";
     }
 
-    @PostMapping("/login")
+    @PostMapping("/login/auth")
     public String login(@Validated @ModelAttribute LoginForm form, BindingResult bindingResult, HttpServletRequest request) {
+        log.info("로그인 포스트 요청 들어옴");
         if (bindingResult.hasErrors()) {
             return "login/loginForm";
         }
 
         Member loginMember = memberService.login(form.getLoginId(), form.getPassword());
-
         if (loginMember == null) {
             bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
             return "login/loginForm";
@@ -43,16 +41,17 @@ public class LoginController {
 
         HttpSession session = request.getSession();
         session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
+        log.info("정상 로그인 처리");
 
         return "redirect:/";
     }
 
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();
         }
-        return "redirect:/";
+        return "redirect:/login";
     }
 }

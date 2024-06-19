@@ -15,35 +15,17 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping("/add")
-    public String addForm(@ModelAttribute("member") Member member) {
+    public String addForm(@ModelAttribute("memberDto") MemberDto memberDto) {
         return "members/addMemberForm.html";
     }
 
     @PostMapping("/add")
-    public String createMember(@Validated @ModelAttribute Member member, BindingResult bindingResult) {
+    public String createMember(@Validated @ModelAttribute MemberDto memberDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "members/addMemberForm.html";
         }
 
-        memberService.join(member);
+        memberService.join(memberDto);
         return "redirect:/";
     }
-
-//
-//    @PostMapping
-//    public ResponseEntity<String> login(@RequestBody Map<String, String> requestBody) {
-//
-//        System.out.println("요청됨");
-//
-//        String id = requestBody.get("username");
-//        String password = requestBody.get("password");
-//
-//        try {
-//            memberService.login(id, password);
-//            return ResponseEntity.ok("로그인 되었습니다.");
-//        } catch (IllegalArgumentException e) {
-//            return ResponseEntity.badRequest().body(e.getMessage());
-//
-//        }
-//    }
 }
