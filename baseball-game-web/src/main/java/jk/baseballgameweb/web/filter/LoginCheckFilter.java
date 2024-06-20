@@ -6,13 +6,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jk.baseballgameweb.web.SessionConst;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.PatternMatchUtils;
 
 import java.io.IOException;
 
 @Slf4j
 public class LoginCheckFilter implements Filter {
-    private static final String[] whiteList = {"/members/add", "/login", "/login/auth","/logout", "/css/*", "/images/*"};
+    private static final String[] whiteList = {"/members/add", "/login-page", "/login/auth","/logout", "/images/**", "/", "/css/**"};
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -26,8 +27,8 @@ public class LoginCheckFilter implements Filter {
 
             if (isLoginCheckPath(requestURI)) {
                 log.info("인증 체크 로직 실행 {}", requestURI);
-                HttpSession session = httpRequest.getSession(false);
-                if (session == null || session.getAttribute(SessionConst.LOGIN_MEMBER) == null) {
+
+                if (!SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
                     log.info("미인증 사용자 요청 {}", requestURI);
                     httpResponse.sendRedirect("/login?redirectURL=" + requestURI);
                     return;

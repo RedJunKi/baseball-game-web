@@ -16,17 +16,19 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CustomAuthorityUtils authorityUtils;
 
 
     public Long join(MemberDto member) {
-        validateDuplicateMember(member.getLoginId());
+        validateDuplicateMember(member.getUsername());
 
         String encodedPassword = passwordEncoder.encode(member.getPassword());
 
         Member result = Member.builder()
-                .loginId(member.getLoginId())
+                .username(member.getUsername())
                 .name(member.getName())
                 .password(encodedPassword)
+                .authority(authorityUtils.createRoles(member.getUsername()))
                 .build();
 
         memberRepository.save(result);
@@ -34,8 +36,8 @@ public class MemberService {
         return result.getId();
     }
 
-    public Member login(String loginId, String password) {
-        return memberRepository.findByLoginId(loginId).filter(m -> passwordEncoder.matches(password, m.getPassword()))
+    public Member login(String username, String password) {
+        return memberRepository.findByUsername(username).filter(m -> passwordEncoder.matches(password, m.getPassword()))
                 .orElse(null);
     }
 
@@ -43,12 +45,12 @@ public class MemberService {
         return memberRepository.findAll();
     }
 
-    public Optional<Member> findOne(Long memberId) {
-        return memberRepository.findById(memberId);
+    public Optional<Member> findByUsername(String username) {
+        return memberRepository.findByUsername(username);
     }
 
-    private void validateDuplicateMember(String loginId) {
-        Optional<Member> result = memberRepository.findByLoginId(loginId);
+    private void validateDuplicateMember(String username) {
+        Optional<Member> result = memberRepository.findByUsername(username);
         result.ifPresent(m -> {
                     throw new IllegalStateException("이미 존재하는 회원입니다.");
                 });

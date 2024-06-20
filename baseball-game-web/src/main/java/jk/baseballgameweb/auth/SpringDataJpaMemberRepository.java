@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface SpringDataJpaMemberRepository extends JpaRepository<Member, Long>, MemberRepository {
     @Override
-    Optional<Member> findByLoginId(String name);
+    Optional<Member> findByUsername(String username);
 }

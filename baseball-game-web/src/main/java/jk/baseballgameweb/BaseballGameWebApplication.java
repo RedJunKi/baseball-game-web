@@ -24,8 +24,11 @@ public class BaseballGameWebApplication {
 		public void initMember() {
 			MemberDto member1 = new MemberDto("asd", "asdf", "asdf");
 			MemberDto member2 = new MemberDto("asdf", "asdf", "asdf");
+			MemberDto junki = new MemberDto("junki@naecco.com", "준기", "asdf");
 			memberService.join(member1);
 			memberService.join(member2);
+			memberService.join(junki);
+
 		}
 	}
 }

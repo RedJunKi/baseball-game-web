@@ -11,15 +11,15 @@ public class MemberDto {
 
     @Size(min = MemberNumberConstants.NAME_MIN, max = MemberNumberConstants.NAME_MAX,
             message = "아이디는 {min}글자 이상, {max}글자 이하로 작성해주세요.")
-    private String loginId;
+    private String username;
     @NotEmpty
     private String name;
     @Size(min = MemberNumberConstants.PASSWORD_MIN, max = MemberNumberConstants.PASSWORD_MAX,
             message = "비밀번호는 {min}글자 이상, {max}글자 이하로 작성해주세요.")
     private String password;
 
-    public MemberDto(String loginId, String name, String password) {
-        this.loginId = loginId;
+    public MemberDto(String username, String name, String password) {
+        this.username = username;
         this.name = name;
         this.password = password;
     }
