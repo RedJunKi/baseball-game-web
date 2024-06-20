@@ -28,13 +28,10 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
 
-        http.authorizeHttpRequests((auth) -> auth
-                .requestMatchers("/login-page", "/register", "/css/**", "/images/**", "/js/**", "/login/auth", "/members/add")
-                .permitAll()
-                .anyRequest().authenticated());
+        http.authorizeHttpRequests((auth) -> auth.anyRequest().permitAll());
 
-        http.formLogin((form) -> form.loginPage("/login-page")
-                .loginProcessingUrl("/login-page")
+        http.formLogin((form) -> form.loginPage("/login")
+                .loginProcessingUrl("/login")
                 .defaultSuccessUrl("/")
                 .permitAll());
 
@@ -42,16 +39,5 @@ public class SecurityConfig {
                 .permitAll());
 
         return http.build();
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(
-            UserDetailsService userDetailsService,
-            PasswordEncoder passwordEncoder) {
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService);
-        authenticationProvider.setPasswordEncoder(passwordEncoder);
-
-        return new ProviderManager(authenticationProvider);
     }
 }

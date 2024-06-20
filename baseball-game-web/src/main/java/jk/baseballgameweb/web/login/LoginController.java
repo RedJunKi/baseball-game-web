@@ -24,9 +24,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class LoginController {
 
     private final MemberService memberService;
-    private final AuthenticationManager authenticateManager;
 
-    @GetMapping("/login-page")
+    @GetMapping("/login")
     public String loginForm(@ModelAttribute("loginForm") LoginForm form) {
         return "login/loginForm";
     }
