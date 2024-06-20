@@ -1,10 +1,10 @@
 package jk.baseballgameweb.numberbaseball;
 
-public class GameService {
+public class NumberBaseballGameService {
 
     private String secretNumber;
 
-    public GameService() {
+    public NumberBaseballGameService() {
         resetGame();
     }
 

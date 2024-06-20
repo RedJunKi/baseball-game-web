@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html th:fragment="layout (content)" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head"></head>
+<body>
+<div th:replace="fragments/header :: nav"></div>
+
+<!-- 메인 컨텐츠 영역 -->
+<div class="container mt-5" style="display: flex;">
+  <div class="col-md-8">
+    <div th:replace="${content}"></div>
+  </div>
+
+  <!-- 오른쪽 채팅 -->
+  <div class="col-md-4" style="overflow-y: auto;">
+    <h2>채팅</h2>
+    <div class="card">
+      <div class="card-body">
+        <!-- 채팅 메시지 출력 영역 -->
+        <div class="chat-messages">
+          <!-- 실시간 채팅 메시지 출력 -->
+          <div>사용자1: 안녕하세요!</div>
+          <div>사용자2: 안녕하세요~</div>
+          <div>사용자1: 오늘 날씨가 좋네요.</div>
+        </div>
+      </div>
+    </div>
+    <!-- 채팅 입력 폼 -->
+    <div class="card-footer">
+      <form>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="메시지 입력">
+          <div class="input-group-append">
+            <button type="submit" class="btn btn-primary">전송</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script src="/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

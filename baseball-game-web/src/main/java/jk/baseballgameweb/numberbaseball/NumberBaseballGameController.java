@@ -2,33 +2,34 @@ package jk.baseballgameweb.numberbaseball;
 
 
 import jakarta.servlet.http.HttpSession;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
-public class GameController {
+public class NumberBaseballGameController {
 
     private static final String GAME_SERVICE_SESSION_KEY = "gameService";
 
     @PostMapping("/guess")
     public GuessResult guessNumber(@RequestBody GuessRequest request, HttpSession session) {
-        GameService gameService = getGameService(session);
-        return gameService.checkGuess(request.getGuess());
+        NumberBaseballGameService numberBaseballGameService = getGameService(session);
+        return numberBaseballGameService.checkGuess(request.getGuess());
     }
 
     @PostMapping("/new-game")
     public void newGame(HttpSession session) {
-        GameService gameService = getGameService(session);
-        gameService.resetGame();
+        NumberBaseballGameService numberBaseballGameService = getGameService(session);
+        numberBaseballGameService.resetGame();
     }
 
-    private GameService getGameService(HttpSession session) {
-        GameService gameService = (GameService) session.getAttribute(GAME_SERVICE_SESSION_KEY);
-        if (gameService == null) {
-            gameService = new GameService();
-            session.setAttribute(GAME_SERVICE_SESSION_KEY, gameService);
+    private NumberBaseballGameService getGameService(HttpSession session) {
+        NumberBaseballGameService numberBaseballGameService = (NumberBaseballGameService) session.getAttribute(GAME_SERVICE_SESSION_KEY);
+        if (numberBaseballGameService == null) {
+            numberBaseballGameService = new NumberBaseballGameService();
+            session.setAttribute(GAME_SERVICE_SESSION_KEY, numberBaseballGameService);
         }
-        return gameService;
+        return numberBaseballGameService;
     }
 }
 

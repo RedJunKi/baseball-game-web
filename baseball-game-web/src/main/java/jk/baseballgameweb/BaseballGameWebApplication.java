@@ -1,12 +1,19 @@
 package jk.baseballgameweb;
 
 import jakarta.annotation.PostConstruct;
+import jk.baseballgameweb.auth.Member;
 import jk.baseballgameweb.auth.MemberDto;
 import jk.baseballgameweb.auth.MemberService;
+import jk.baseballgameweb.rank.GameType;
+import jk.baseballgameweb.rank.Rank;
+import jk.baseballgameweb.rank.RankController;
+import jk.baseballgameweb.rank.RankRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @SpringBootApplication
 public class BaseballGameWebApplication {
@@ -19,6 +26,8 @@ public class BaseballGameWebApplication {
 	@Component
 	public static class InitClass {
 		private final MemberService memberService;
+		private final RankController rankController;
+		private final RankRepository rankRepository;
 
 		@PostConstruct
 		public void initMember() {
@@ -28,7 +37,9 @@ public class BaseballGameWebApplication {
 			memberService.join(member1);
 			memberService.join(member2);
 			memberService.join(junki);
-
+			Member findMember = memberService.findByUsername("asdf").get();
+			Rank rank = new Rank(findMember, GameType.NUMBER_BASEBALL, 10L);
+			rankRepository.save(rank);
 		}
 	}
 }
