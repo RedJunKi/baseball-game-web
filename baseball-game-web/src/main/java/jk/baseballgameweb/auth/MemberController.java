@@ -24,8 +24,11 @@ public class MemberController {
         if (bindingResult.hasErrors()) {
             return "members/addMemberForm.html";
         }
-
-        memberService.join(memberDto);
-        return "redirect:/";
+        try {
+            memberService.join(memberDto);
+        } catch (IllegalStateException e) {
+            return "error/duplicate-member";
+        }
+        return "redirect:/login";
     }
 }

@@ -4,6 +4,10 @@ import jakarta.annotation.PostConstruct;
 import jk.baseballgameweb.auth.Member;
 import jk.baseballgameweb.auth.MemberDto;
 import jk.baseballgameweb.auth.MemberService;
+import jk.baseballgameweb.board.Board;
+import jk.baseballgameweb.board.BoardDto;
+import jk.baseballgameweb.board.BoardRepository;
+import jk.baseballgameweb.board.BoardService;
 import jk.baseballgameweb.rank.GameType;
 import jk.baseballgameweb.rank.Rank;
 import jk.baseballgameweb.rank.RankController;
@@ -28,6 +32,7 @@ public class BaseballGameWebApplication {
 		private final MemberService memberService;
 		private final RankController rankController;
 		private final RankRepository rankRepository;
+		private final BoardService boardService;
 
 		@PostConstruct
 		public void initMember() {
@@ -40,6 +45,8 @@ public class BaseballGameWebApplication {
 			Member findMember = memberService.findByUsername("asdf").get();
 			Rank rank = new Rank(findMember, GameType.NUMBER_BASEBALL, 10L);
 			rankRepository.save(rank);
+			BoardDto boardDto = new BoardDto("asdf", "123", "456");
+			boardService.post(boardDto);
 		}
 	}
 }

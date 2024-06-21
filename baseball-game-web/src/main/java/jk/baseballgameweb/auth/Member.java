@@ -1,15 +1,21 @@
 package jk.baseballgameweb.auth;
 
 import jakarta.persistence.*;
+import jk.baseballgameweb.board.Board;
+import jk.baseballgameweb.rank.Rank;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
 public class Member {
 
     @Id
@@ -24,14 +30,9 @@ public class Member {
 
     private List<String> authority;
 
-    public Member() {
-    }
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Board> board;
 
-    public Member(Long id, String username, String name, String password, List<String> authority) {
-        this.id = id;
-        this.username = username;
-        this.name = name;
-        this.password = password;
-        this.authority = authority;
+    public Member() {
     }
 }

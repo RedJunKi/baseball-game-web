@@ -37,13 +37,13 @@
                     <a class="nav-link" href="#">게임 랭킹</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">커뮤니티</a>
+                    <a class="nav-link" href="/board">커뮤니티</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">내 정보</a>
                 </li>
                 <li class="nav-item">
-                    <span class="nav-link disabled" th:if="${#authentication != null}" th:text="${#authentication.principal.name}">사용자 이름</span>
+                    <a class="nav-link" href="/logout">로그아웃</a>
                 </li>
             </ul>
         </div>
