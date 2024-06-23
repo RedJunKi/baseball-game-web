@@ -57,4 +57,20 @@ public class MemberService {
                     throw new IllegalStateException("이미 존재하는 회원입니다.");
                 });
     }
+
+    public void updateMember(Long memberId, MemberDto memberDto) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalStateException("회원이 없습니다."));
+        member.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+        member.setName(memberDto.getName());
+        memberRepository.save(member);
+    }
+
+    public void delete(Member member) {
+        memberRepository.deleteById(member.getId());
+    }
+
+    public void save(Member member) {
+        memberRepository.save(member);
+    }
 }

@@ -42,9 +42,9 @@ public class BaseballGameWebApplication {
 			memberService.join(member1);
 			memberService.join(member2);
 			memberService.join(junki);
-			Member findMember = memberService.findByUsername("asdf").get();
-			Rank rank = new Rank(findMember, GameType.NUMBER_BASEBALL, 10L);
-			rankRepository.save(rank);
+//			Member findMember = memberService.findByUsername("asdf").get();
+//			Rank rank = new Rank(findMember, GameType.NUMBER_BASEBALL, 10L);
+//			rankRepository.save(rank);
 			BoardDto boardDto = new BoardDto("asdf", "123", "456");
 			boardService.post(boardDto);
 		}

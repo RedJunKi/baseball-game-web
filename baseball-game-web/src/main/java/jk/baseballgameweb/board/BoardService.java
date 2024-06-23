@@ -28,7 +28,6 @@ public class BoardService {
     }
 
     public Board post(BoardDto boardDto) {
-        log.info("찾는아이디={}", boardDto.getUsername());
         Member findMember = memberService.findByUsername(boardDto.getUsername())
                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 사용자입니다."));
         Board board = new Board(findMember, boardDto.getTitle(), boardDto.getContent());
