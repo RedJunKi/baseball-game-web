@@ -6,6 +6,7 @@ import jk.baseballgameweb.auth.MemberDto;
 import jk.baseballgameweb.board.Board;
 import jk.baseballgameweb.board.BoardController;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -32,10 +33,13 @@ public class HomeController {
     }
 
     @GetMapping("board")
-    public String board(Model model) {
-        List<Board> boards = boardController.getAllTitle(model);
+    public String board(Model model,
+                        @RequestParam(value = "page", defaultValue = "0") int page,
+                        @RequestParam(value = "size", defaultValue = "5") int size) {
+        Page<Board> boards = boardController.getBoards(page, size);
 
-        model.addAttribute("posts", boards);
+        model.addAttribute("posts", boards.getContent());
+        model.addAttribute("page", boards);
         return "board/board-home";
     }
 
@@ -50,7 +54,7 @@ public class HomeController {
                             Model model) {
         boardController.post(title, content);
 
-        return board(model);
+        return "redirect:/board";
     }
 
     @GetMapping("post/{boardId}")

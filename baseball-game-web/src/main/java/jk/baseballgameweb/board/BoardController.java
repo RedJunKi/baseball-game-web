@@ -2,6 +2,7 @@ package jk.baseballgameweb.board;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -21,9 +22,8 @@ public class BoardController {
     private final BoardService boardService;
 
     @GetMapping
-    public List<Board> getAllTitle(Model model) {
-
-        return boardService.getAllTitle();
+    public Page<Board> getBoards(int page, int size) {
+        return boardService.getBoards(page, size);
     }
 
     @GetMapping("/{boardId}")

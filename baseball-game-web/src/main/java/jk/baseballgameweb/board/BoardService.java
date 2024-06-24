@@ -4,6 +4,8 @@ import jk.baseballgameweb.auth.Member;
 import jk.baseballgameweb.auth.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,8 +21,8 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final MemberService memberService;
 
-    public List<Board> getAllTitle() {
-        return boardRepository.findAll();
+    public Page<Board> getBoards(int page, int size) {
+        return boardRepository.findAll(PageRequest.of(page, size));
     }
 
     public Board getContent(Long boardId) {
