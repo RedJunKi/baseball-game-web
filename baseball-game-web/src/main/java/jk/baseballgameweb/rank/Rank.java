@@ -20,12 +20,12 @@ public class Rank {
 
     @Enumerated(EnumType.STRING)
     private GameType game;
-    private Long point;
+    private int point;
 
     public Rank() {
     }
 
-    public Rank(Member member, GameType game, Long point) {
+    public Rank(Member member, GameType game, int point) {
         this.member = member;
         this.game = game;
         this.point = point;

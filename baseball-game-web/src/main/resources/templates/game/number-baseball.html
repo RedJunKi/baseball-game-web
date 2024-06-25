@@ -7,7 +7,7 @@
     <h2>숫자야구</h2>
     <!-- 숫자야구 게임 내용 -->
     <div style="text-align: center; margin-bottom: 20px;">
-        <img src="/images/baseball.jpg" alt="Ryu" style="width:30%">
+        <img src="/images/baseball.jpg" alt="Ryu" style="width:20%">
     </div>
     <form id="game-form" style="text-align: center;">
         <fieldset>
@@ -18,8 +18,12 @@
         </fieldset>
     </form>
     <div id="result" style="margin-top: 20px"></div>
+    <div id="history" style="margin-top: 20px text-align: center;"></div>
 
     <script>
+        // 시도한 기록을 저장할 배열
+        let history = [];
+
         document.getElementById('game-form').addEventListener('submit', async function (event) {
             event.preventDefault();
             const guess = document.getElementById('guess').value;
@@ -35,32 +39,55 @@
             const result = await response.json();
             document.getElementById('result').textContent = `스트라이크: ${result.strikes}, 볼: ${result.balls}`;
 
-            if (result.strikes ===3) {
+            // 시도한 기록을 배열에 추가
+            history.push({ guess, strikes: result.strikes, balls: result.balls });
+            updateHistory();
+
+            if (result.strikes === 3) {
                 const newGame = confirm('정답입니다! 새로운 게임을 시작하시겠습니까?');
                 if (newGame) {
                     await fetch('/api/new-game', {
-                        method: 'POST'
+                        method: 'POST',
+                        headers:{
+                            'content-type': 'application/json'
+                        },
+                        body: JSON.stringify({ attempts: history.length })
                     });
                     document.getElementById('result').textContent = '';
                     document.getElementById('guess').value = '';
+                    history = [];  // 기록 초기화
+                    updateHistory();
                     alert('새로운 게임이 시작되었습니다!');
                 }
             }
         });
+
         document.getElementById('reset-button').addEventListener('click', async function () {
-        const response = await fetch('/api/new-game', {
-            method: 'POST'
-    });
+            const response = await fetch('/api/new-game', {
+                method: 'POST'
+            });
 
-    if (response.ok) {
-        document.getElementById('result').textContent = '';
-        document.getElementById('guess').value = '';
-        alert('새로운 게임이 시작되었습니다!');
-    } else {
-        alert('새로운 게임을 시작하는 데 실패했습니다.');
-    }
-});
+            if (response.ok) {
+                document.getElementById('result').textContent = '';
+                document.getElementById('guess').value = '';
+                history = [];  // 기록 초기화
+                updateHistory();
+                alert('새로운 게임이 시작되었습니다!');
+            } else {
+                alert('새로운 게임을 시작하는 데 실패했습니다.');
+            }
+        });
 
+        // 기록을 업데이트하여 화면에 표시하는 함수
+        function updateHistory() {
+            const historyDiv = document.getElementById('history');
+            historyDiv.innerHTML = '';  // 기존 내용을 지움
+            history.forEach((item, index) => {
+                const entry = document.createElement('div');
+                entry.textContent = `시도 ${index + 1}: ${item.guess} - 스트라이크: ${item.strikes}, 볼: ${item.balls}`;
+                historyDiv.appendChild(entry);
+            });
+        }
     </script>
 </div>
 </body>
