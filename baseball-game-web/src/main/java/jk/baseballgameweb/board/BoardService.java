@@ -44,4 +44,8 @@ public class BoardService {
     public void delete(Long id) {
         boardRepository.delete(id);
     }
+
+    public Page<Board> getMyBoard(Long memberId) {
+        return boardRepository.findByMemberId(memberId, PageRequest.of(0, 3));
+    }
 }

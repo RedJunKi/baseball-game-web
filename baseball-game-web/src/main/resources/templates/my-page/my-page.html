@@ -47,6 +47,35 @@
     <form th:action="@{/members/delete}" method="post" id="deleteForm" style="display: none;">
     </form>
 
+    <div>
+        <div>
+            <h2>내가 작성한 게시물</h2>
+            <div class="list-group">
+                <div th:each="post : ${posts}">
+                    <a th:href="@{/post/{postId}(postId=${post.id})}" class="list-group-item list-group-item-action"
+                       th:text="${post.title}"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="pagination">
+            <ul class="pagination">
+                <li th:if="${page.hasPrevious()}" style="margin-right: 5px">
+                    <a th:href="@{/board(page=${page.number - 1}, size=${page.size})}">Previous</a>
+                </li>
+
+                <li th:if="${page.totalPages > 1}" th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+                    th:class="${page.number == i ? 'active' : ''}" style="margin-right: 5px">
+                    <a th:href="@{/board(page=${i}, size=${page.size})}" th:text="${i + 1}">1</a>
+                </li>
+
+                <li th:if="${page.hasNext()}" style="margin-right: 5px">
+                    <a th:href="@{/board(page=${page.number + 1}, size=${page.size})}">Next</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
 </div>
 </body>
 </html>

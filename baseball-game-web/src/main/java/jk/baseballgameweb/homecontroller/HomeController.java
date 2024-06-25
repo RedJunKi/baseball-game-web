@@ -70,8 +70,10 @@ public class HomeController {
     public String getMyPage(@ModelAttribute("memberDto") MemberDto memberDto, Model model) {
         MemberDto result = memberController.findLoginMemberInfo();
 
+        Page<Board> boards = boardController.getMyBoard();
         model.addAttribute("memberDto", result);
-
+        model.addAttribute("posts", boards.getContent());
+        model.addAttribute("page", boards);
         return "my-page/my-page";
     }
 
@@ -80,7 +82,7 @@ public class HomeController {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.memberDto", bindingResult);
             redirectAttributes.addFlashAttribute("memberDto", memberDto);
-            return "my-page/my-page";
+            return "redirect:/my-page";
         }
         memberController.updateMember(memberDto);
         redirectAttributes.addFlashAttribute("successMessage", "회원 정보가 성공적으로 업데이트되었습니다.");

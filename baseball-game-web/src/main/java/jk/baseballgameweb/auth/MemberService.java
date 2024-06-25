@@ -73,4 +73,12 @@ public class MemberService {
     public void save(Member member) {
         memberRepository.save(member);
     }
+
+    public Member getMember(String username) {
+        Optional<Member> result = findByUsername(username);
+        if (result.isEmpty()) {
+            throw new IllegalStateException("회원이 없습니다.");
+        }
+        return result.get();
+    }
 }

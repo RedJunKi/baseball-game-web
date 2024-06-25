@@ -1,5 +1,6 @@
 package jk.baseballgameweb.auth;
 
+import jk.baseballgameweb.Util.MemberUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,26 +39,19 @@ public class MemberController {
 
     @PatchMapping("/update")
     public String updateMember(@ModelAttribute MemberDto memberDto) {
-        memberService.updateMember(getMember().getId(), memberDto);
+        Member target = memberService.getMember(MemberUtil.getUsername());
+        memberService.updateMember(target.getId(), memberDto);
         return "redirect:/";
     }
 
     public MemberDto findLoginMemberInfo() {
-        Member member = getMember();
+        Member member = memberService.getMember(MemberUtil.getUsername());
         return new MemberDto(member.getUsername(), member.getName(), member.getPassword());
     }
 
-    private Member getMember() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String name = authentication.getName();
-        Optional<Member> result = memberService.findByUsername(name);
-        if (result.isEmpty()) {
-            throw new IllegalStateException("회원이 없습니다.");
-        }
-        return result.get();
-    }
 
     public void delete() {
-        memberService.delete(getMember());
+        Member result = memberService.getMember(MemberUtil.getUsername());
+        memberService.delete(result);
     }
 }

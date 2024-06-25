@@ -54,4 +54,19 @@ public class BoardRepository {
                 .setParameter("id", id)
                 .executeUpdate();
     }
+
+    public Page<Board> findByMemberId(Long memberId, Pageable pageable) {
+        String jpql = "select b from Board b where b.member.Id = :memberId order by b.id desc";
+        TypedQuery<Board> query = em.createQuery(jpql, Board.class);
+        query.setParameter("memberId", memberId);
+        query.setFirstResult((int) pageable.getOffset());
+        query.setMaxResults(pageable.getPageSize());
+
+        List<Board> resultList = query.getResultList();
+
+        TypedQuery<Long> countQuery = em.createQuery("select count(b) from Board b where b.member.Id = :memberId", Long.class);
+        countQuery.setParameter("memberId", memberId);
+        Long total = countQuery.getSingleResult();
+        return new PageImpl<>(resultList, pageable, total);
+    }
 }

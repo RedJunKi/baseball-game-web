@@ -1,5 +1,8 @@
 package jk.baseballgameweb.board;
 
+import jk.baseballgameweb.Util.MemberUtil;
+import jk.baseballgameweb.auth.Member;
+import jk.baseballgameweb.auth.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -20,6 +23,7 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
+    private final MemberService memberService;
 
     @GetMapping
     public Page<Board> getBoards(int page, int size) {
@@ -66,5 +70,11 @@ public class BoardController {
         }
 
         return "redirect:/board";
+    }
+
+    public Page<Board> getMyBoard() {
+        Member member = memberService.getMember(MemberUtil.getUsername());
+
+        return boardService.getMyBoard(member.getId());
     }
 }
