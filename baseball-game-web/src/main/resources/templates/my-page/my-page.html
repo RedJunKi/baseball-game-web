@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html th:replace="~{fragments/layout :: layout(~{::content})}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head"></head>
+<body>
+
+<div th:fragment="content">
+    <h2>내 정보</h2>
+    <form action="" th:action="@{/my-page/update}" th:object="${memberDto}" method="post">
+        <div class="content-container">
+            <div th:if="${#fields.hasGlobalErrors()}">
+                <p class="field-error" th:each="err : ${#fields.globalErrors()}"
+                   th:text="${err}">전체 오류 메세지</p>
+            </div>
+
+            <div>
+                <label for="username">로그인 ID</label>
+                <input type="text" id="username" th:field="${memberDto.username}" class="form-control"
+                       th:errorclass="field-error" readonly>
+                <div class="field-error" th:errors="*{username}"/>
+            </div>
+
+            <div>
+                <label for="password">비밀번호</label>
+                <input type="password" id="password" th:field="*{password}" class="form-control"
+                       th:errorclass="field-error">
+                <div class="field-error" th:errors="*{password}"/>
+            </div>
+
+            <div>
+                <label for="name">이름</label>
+                <input type="text" id="name" th:field="${memberDto.name}" class="form-control"
+                       th:errorclass="field-error">
+                <div class="field-error" th:errors="*{name}"/>
+            </div>
+
+            <hr>
+            <div class="d-flex justify-content-end mb-3" style="margin-top:10px">
+                <button type="submit" class="btn btn-secondary" style="margin-right: 5px">정보 수정</button>
+
+                <button type="button" class="btn btn-secondary" style="margin-right: 5px" onclick="document.getElementById('deleteForm').submit();">회원 탈퇴</button>
+
+                <button type="button" class="btn btn-primary" onclick="location.href='/'">돌아가기</button>
+            </div>
+        </div>
+    </form>
+
+    <form th:action="@{/members/delete}" method="post" id="deleteForm" style="display: none;">
+    </form>
+
+    <div>
+        <div>
+            <h2>내가 작성한 게시물</h2>
+            <div class="list-group">
+                <div th:each="post : ${posts}">
+                    <a th:href="@{/post/{postId}(postId=${post.id})}" class="list-group-item list-group-item-action"
+                       th:text="${post.title}"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="pagination">
+            <ul class="pagination">
+                <li th:if="${page.hasPrevious()}" style="margin-right: 5px">
+                    <a th:href="@{/board(page=${page.number - 1}, size=${page.size})}">Previous</a>
+                </li>
+
+                <li th:if="${page.totalPages > 1}" th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+                    th:class="${page.number == i ? 'active' : ''}" style="margin-right: 5px">
+                    <a th:href="@{/board(page=${i}, size=${page.size})}" th:text="${i + 1}">1</a>
+                </li>
+
+                <li th:if="${page.hasNext()}" style="margin-right: 5px">
+                    <a th:href="@{/board(page=${page.number + 1}, size=${page.size})}">Next</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

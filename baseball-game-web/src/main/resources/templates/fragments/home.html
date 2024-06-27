@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html th:replace="~{fragments/layout :: layout(~{::content})}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head"></head>
+<body>
+
+<div th:fragment="content">
+    <h2>게임 선택</h2>
+    <div class="list-group">
+        <a href="/game/hanoi" class="list-group-item list-group-item-action">하노이의 탑</a>
+        <a href="/game/number-baseball" class="list-group-item list-group-item-action">숫자야구</a>
+        <a href="/game/blackjack" class="list-group-item list-group-item-action">블랙잭</a>
+    </div>
+</div>
+</body>
+</html>

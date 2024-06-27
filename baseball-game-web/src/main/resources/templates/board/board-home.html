@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html th:replace="~{fragments/layout :: layout(~{::content})}" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="content">
+    <h2>게시물 선택</h2>
+    <div class="list-group">
+        <div th:each="post : ${posts}">
+            <a th:href="@{/post/{postId}(postId=${post.id})}" class="list-group-item list-group-item-action"
+               th:text="${post.title}"></a>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-end mb-3" style="margin-top: 50px;">
+        <button class="btn btn-secondary btn-lg" onclick="location.href='addBoardForm.html'"
+                th:onclick="|location.href='@{/board/post}'|" type="button">게시물 작성
+        </button>
+    </div>
+
+    <div class="pagination">
+        <ul class="pagination">
+            <li th:if="${page.hasPrevious()}" style="margin-right: 5px">
+                <a th:href="@{/board(page=${page.number - 1}, size=${page.size})}">Previous</a>
+            </li>
+
+            <li th:if="${page.totalPages > 1}" th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+                th:class="${page.number == i ? 'active' : ''}" style="margin-right: 5px">
+                <a th:href="@{/board(page=${i}, size=${page.size})}" th:text="${i + 1}">1</a>
+            </li>
+
+            <li th:if="${page.hasNext()}" style="margin-right: 5px">
+                <a th:href="@{/board(page=${page.number + 1}, size=${page.size})}">Next</a>
+            </li>
+        </ul>
+    </div>
+
+</div>
+</body>
+</html>
